@@ -5,6 +5,7 @@ import {
   VideoTexture,
   StandardMaterial,
   Color3,
+  AbstractMesh,
 } from "@babylonjs/core";
 import "@babylonjs/core/Rendering/outlineRenderer";
 
@@ -57,7 +58,7 @@ export async function loadGLBWithTexture(
 
 async function applyTextureToMesh(
   scene: Scene,
-  meshes: any[],
+  meshes: AbstractMesh[],
   meshName: string,
   texturePath: string,
   materialName: string = "customMaterial",
