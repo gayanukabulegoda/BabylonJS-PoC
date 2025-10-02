@@ -2,14 +2,17 @@ import {
   Scene,
   SceneLoader,
   Texture,
+  VideoTexture,
   StandardMaterial,
   Color3,
 } from "@babylonjs/core";
 import "@babylonjs/core/Rendering/outlineRenderer";
+
 interface GLBLoadOptions {
   meshName?: string;
   texturePath?: string;
   materialName?: string;
+  isVideo?: boolean;
 }
 
 export async function loadGLBWithTexture(
@@ -40,7 +43,8 @@ export async function loadGLBWithTexture(
         result.meshes,
         options.meshName,
         options.texturePath,
-        options.materialName
+        options.materialName,
+        options.isVideo
       );
     }
 
@@ -56,7 +60,8 @@ async function applyTextureToMesh(
   meshes: any[],
   meshName: string,
   texturePath: string,
-  materialName: string = "customMaterial"
+  materialName: string = "customMaterial",
+  isVideo: boolean = false
 ) {
   // Find the specific mesh
   const targetMesh = meshes.find((mesh) => mesh.name === meshName);
@@ -72,8 +77,31 @@ async function applyTextureToMesh(
   // Create new material
   const material = new StandardMaterial(materialName, scene);
 
-  // Load texture
-  const texture = new Texture(texturePath, scene);
+  // Load texture (image or video)
+  let texture;
+  if (isVideo) {
+    // Create video element
+    const video = document.createElement("video");
+    video.src = texturePath;
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "auto";
+
+    // Add video to DOM (required for some browsers)
+    video.style.display = "none";
+    document.body.appendChild(video);
+
+    // Create video texture
+    texture = new VideoTexture(materialName + "_video", video, scene);
+
+    // Start video playback
+    video.play().catch((e) => console.log("Video play error:", e));
+  } else {
+    // Create regular image texture
+    texture = new Texture(texturePath, scene);
+  }
 
   // Configure texture
   texture.uScale = 1;

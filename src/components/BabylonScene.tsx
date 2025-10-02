@@ -25,7 +25,7 @@ export default function BabylonScene() {
     const scene = new Scene(engine);
 
     // Set backgroundcolor to the scene
-    scene.clearColor = new Color4(0.8, 0.7, 0.6, 1.0);
+    scene.clearColor = new Color4(0.75, 0.75, 0.75, 1.0);
 
     // Create a camera
     const camera = new ArcRotateCamera(
@@ -61,11 +61,13 @@ export default function BabylonScene() {
             meshName: "Billboard_1920x1080_001_primitive2",
             texturePath: "/images/bad_meow_01.jpg",
             materialName: "happyDogMaterial",
+            isVideo: false,
           },
           {
             meshName: "Billboard_1920x1080_001_primitive1",
             texturePath: "/images/bad_meow_02.jpg",
             materialName: "badMeowMaterial",
+            isVideo: false,
           },
         ],
       },
@@ -76,11 +78,30 @@ export default function BabylonScene() {
             meshName: "Billboard_1920x1080_001_primitive2",
             texturePath: "/images/bad_meow_01.jpg",
             materialName: "glowHappyDogMaterial",
+            isVideo: false,
           },
           {
             meshName: "Billboard_1920x1080_001_primitive1",
             texturePath: "/images/bad_meow_02.jpg",
             materialName: "glowBadMeowMaterial",
+            isVideo: false,
+          },
+        ],
+      },
+      {
+        glbFile: "billboardForVideos.glb",
+        textures: [
+          {
+            meshName: "Billboard_1920x1080_001_primitive2",
+            texturePath: "/videos/hehe_emoji_video.mp4",
+            materialName: "heheVideoMaterial",
+            isVideo: true,
+          },
+          {
+            meshName: "Billboard_1920x1080_001_primitive1",
+            texturePath: "/videos/oops_emoji_video.mp4",
+            materialName: "oopsVideoMaterial",
+            isVideo: true,
           },
         ],
       },
@@ -93,6 +114,7 @@ export default function BabylonScene() {
           meshName: textureConfig.meshName,
           texturePath: textureConfig.texturePath,
           materialName: textureConfig.materialName,
+          isVideo: textureConfig.isVideo,
         }).then((result) => {
           // Scale and position models side by side
           result.meshes.forEach((mesh) => {
