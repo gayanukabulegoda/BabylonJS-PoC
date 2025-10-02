@@ -8,6 +8,8 @@ import {
   HemisphericLight,
   Vector3,
   Color4,
+  StandardMaterial,
+  VideoTexture,
 } from "@babylonjs/core";
 import "@babylonjs/loaders/glTF";
 import { loadGLBWithTexture } from "@/utils/glbLoader";
@@ -153,13 +155,15 @@ export default function BabylonScene() {
                     mesh.material &&
                     mesh.material.getClassName() === "StandardMaterial"
                   ) {
-                    const standardMaterial = mesh.material as any;
+                    const standardMaterial = mesh.material as StandardMaterial;
                     if (
                       standardMaterial.diffuseTexture &&
                       standardMaterial.diffuseTexture.getClassName() ===
                         "VideoTexture"
                     ) {
-                      standardMaterial.diffuseTexture.update();
+                      (
+                        standardMaterial.diffuseTexture as VideoTexture
+                      ).update();
                       standardMaterial.markAsDirty(1);
                     }
                   }
