@@ -30,10 +30,10 @@ export default function BabylonScene() {
     // Create a camera
     const camera = new ArcRotateCamera(
       "camera",
-      -Math.PI / 2,
-      Math.PI / 2.5,
-      5,
-      Vector3.Zero(),
+      -Math.PI / 2.5,
+      Math.PI / 3,
+      18,
+      new Vector3(8, 0, 0),
       scene
     );
 
@@ -142,11 +142,30 @@ export default function BabylonScene() {
 
           // Add rotation animation for billboardRotate.glb
           if (config.glbFile === "billboardRotate.glb") {
-            scene.registerBeforeRender(() => {
-              result.meshes.forEach((mesh) => {
-                mesh.rotation.y += 0.01; // Rotate horizontally
+            // Wait for textures to settle before starting rotation
+            setTimeout(() => {
+              scene.registerBeforeRender(() => {
+                result.meshes.forEach((mesh) => {
+                  mesh.rotation.y += 0.01; // Rotate horizontally
+
+                  // Force video texture update during rotation
+                  if (
+                    mesh.material &&
+                    mesh.material.getClassName() === "StandardMaterial"
+                  ) {
+                    const standardMaterial = mesh.material as any;
+                    if (
+                      standardMaterial.diffuseTexture &&
+                      standardMaterial.diffuseTexture.getClassName() ===
+                        "VideoTexture"
+                    ) {
+                      standardMaterial.diffuseTexture.update();
+                      standardMaterial.markAsDirty(1);
+                    }
+                  }
+                });
               });
-            });
+            }, 2000); // Wait 2 seconds for textures to settle
           }
 
           console.log(
