@@ -105,6 +105,23 @@ export default function BabylonScene() {
           },
         ],
       },
+      {
+        glbFile: "billboardRotate.glb",
+        textures: [
+          {
+            meshName: "Billboard_1920x1080_001_primitive2",
+            texturePath: "/videos/crypto_life.mp4",
+            materialName: "rotateHeheVideoMaterial",
+            isVideo: true,
+          },
+          {
+            meshName: "Billboard_1920x1080_001_primitive1",
+            texturePath: "/videos/crazy_run.mp4",
+            materialName: "rotateOopsVideoMaterial",
+            isVideo: true,
+          },
+        ],
+      },
     ];
 
     // Load all GLB files with their textures
@@ -122,6 +139,16 @@ export default function BabylonScene() {
             // Position first GLB on the left, second GLB on the right with more gap
             mesh.position = new Vector3(index * 12, 0, 0);
           });
+
+          // Add rotation animation for billboardRotate.glb
+          if (config.glbFile === "billboardRotate.glb") {
+            scene.registerBeforeRender(() => {
+              result.meshes.forEach((mesh) => {
+                mesh.rotation.y += 0.01; // Rotate horizontally
+              });
+            });
+          }
+
           console.log(
             `${config.glbFile} loaded and positioned at x: ${index * 12}!`
           );
