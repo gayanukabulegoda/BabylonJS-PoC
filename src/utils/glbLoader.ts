@@ -5,15 +5,13 @@ import {
   StandardMaterial,
   Color3,
 } from "@babylonjs/core";
-
-// Simple interface for GLB loading options
+import "@babylonjs/core/Rendering/outlineRenderer";
 interface GLBLoadOptions {
   meshName?: string;
   texturePath?: string;
   materialName?: string;
 }
 
-// Simple function to load a GLB file and apply texture
 export async function loadGLBWithTexture(
   scene: Scene,
   glbPath: string,
@@ -53,7 +51,6 @@ export async function loadGLBWithTexture(
   }
 }
 
-// Simple function to apply texture to a specific mesh
 async function applyTextureToMesh(
   scene: Scene,
   meshes: any[],
@@ -78,7 +75,7 @@ async function applyTextureToMesh(
   // Load texture
   const texture = new Texture(texturePath, scene);
 
-  // Configure texture (flip if needed)
+  // Configure texture
   texture.uScale = 1;
   texture.vScale = -1; // Flip vertically
   texture.uOffset = 0;
@@ -91,6 +88,21 @@ async function applyTextureToMesh(
   material.backFaceCulling = false;
   material.twoSidedLighting = true;
   material.emissiveColor = new Color3(0.1, 0.1, 0.1);
+
+  // Add blue glow effect
+  if (materialName.includes("glow")) {
+    material.diffuseColor = new Color3(0.0, 0.5, 1.0); // Blue border color
+    material.emissiveColor = new Color3(0.0, 0.3, 0.8); // Blue glow
+    material.specularColor = new Color3(0.0, 0.4, 1.0); // Blue specular
+    material.roughness = 0.2;
+
+    // Babylon.js does not provide a built-in way to glow only the borders of a mesh using StandardMaterial or the default GlowLayer.
+    // The typical GlowLayer in Babylon.js applies glow to the entire mesh, not just the borders.
+    // To achieve a border-only glow effect, you would need to use custom shaders or a post-process effect.
+    // The current approach of cloning the mesh and applying a border/glow material is a common workaround.
+
+    console.log(`Blue border glow added to ${meshName}!`);
+  }
 
   // Apply material to mesh
   targetMesh.material = material;

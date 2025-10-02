@@ -24,15 +24,15 @@ export default function BabylonScene() {
     // Create a scene
     const scene = new Scene(engine);
 
-    // Set a professional light brown background
-    scene.clearColor = new Color4(0.8, 0.7, 0.6, 1.0); // Light brown color with full opacity
+    // Set backgroundcolor to the scene
+    scene.clearColor = new Color4(0.8, 0.7, 0.6, 1.0);
 
-    // Create a camera positioned closer to see the model better
+    // Create a camera
     const camera = new ArcRotateCamera(
       "camera",
       -Math.PI / 2,
       Math.PI / 2.5,
-      5, // Closer to the model
+      5,
       Vector3.Zero(),
       scene
     );
@@ -49,29 +49,62 @@ export default function BabylonScene() {
       }
     });
 
-    // Create a brighter light for better visibility
+    // Create a light
     const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
-    light.intensity = 1.5; // Brighter light
+    light.intensity = 1.5;
 
-    // Load the billboard GLB model with texture
-    loadGLBWithTexture(scene, "/3D assets/", "billboard.glb", {
-      meshName: "Billboard_1920x1080_001_primitive2",
-      texturePath: "/images/happy_dog.jpg",
-      materialName: "billboardMaterial",
-    }).then((result) => {
-      // Scale the model to a smaller, more visible size
-      result.meshes.forEach((mesh) => {
-        mesh.scaling = new Vector3(0.5, 0.5, 0.5); // Smaller size for better visibility
-        mesh.position = Vector3.Zero(); // Center the model
+    const glbConfigs = [
+      {
+        glbFile: "billboard.glb",
+        textures: [
+          {
+            meshName: "Billboard_1920x1080_001_primitive2",
+            texturePath: "/images/bad_meow_01.jpg",
+            materialName: "happyDogMaterial",
+          },
+          {
+            meshName: "Billboard_1920x1080_001_primitive1",
+            texturePath: "/images/bad_meow_02.jpg",
+            materialName: "badMeowMaterial",
+          },
+        ],
+      },
+      {
+        glbFile: "billboardGlow.glb",
+        textures: [
+          {
+            meshName: "Billboard_1920x1080_001_primitive2",
+            texturePath: "/images/bad_meow_01.jpg",
+            materialName: "glowHappyDogMaterial",
+          },
+          {
+            meshName: "Billboard_1920x1080_001_primitive1",
+            texturePath: "/images/bad_meow_02.jpg",
+            materialName: "glowBadMeowMaterial",
+          },
+        ],
+      },
+    ];
+
+    // Load all GLB files with their textures
+    glbConfigs.forEach((config, index) => {
+      config.textures.forEach((textureConfig) => {
+        loadGLBWithTexture(scene, "/3D assets/", config.glbFile, {
+          meshName: textureConfig.meshName,
+          texturePath: textureConfig.texturePath,
+          materialName: textureConfig.materialName,
+        }).then((result) => {
+          // Scale and position models side by side
+          result.meshes.forEach((mesh) => {
+            mesh.scaling = new Vector3(0.5, 0.5, 0.5);
+            // Position first GLB on the left, second GLB on the right with more gap
+            mesh.position = new Vector3(index * 12, 0, 0);
+          });
+          console.log(
+            `${config.glbFile} loaded and positioned at x: ${index * 12}!`
+          );
+        });
       });
-      console.log("Model scaled and positioned for better visibility!");
-    });
-
-    // Load the same GLB model with different texture for primitive1
-    loadGLBWithTexture(scene, "/3D assets/", "billboard.glb", {
-      meshName: "Billboard_1920x1080_001_primitive1",
-      texturePath: "/images/bad_meow.jpg",
-      materialName: "badMeowMaterial",
     });
 
     // Start the render loop
