@@ -1,4 +1,4 @@
-# 🌐 Babylon PoC - 3D Billboard Experience
+# 🌐 Billboard Showcase - 3D Billboard Experience
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 **An immersive 3D experience showcasing dynamic billboards with video textures, interactive elements, and real-time animations.**
 
-[🚀 Live Demo](https://babylon-js-po-c.vercel.app/)
+[🚀 Live Demo](https://billboard-showcase.vercel.app/)
 
 </div>
 
@@ -95,8 +95,8 @@ public/
 
 ```bash
 # Clone the repository
-git clone https://github.com/gayanukabulegoda/BabylonJS-PoC.git
-cd BabylonJS-PoC
+git clone https://github.com/gayanukabulegoda/Billboard-Showcase.git
+cd Billboard-Showcase
 
 # Install dependencies
 npm install
@@ -256,6 +256,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Developed by Gayanuka Bulegoda**
 
-[⭐ Star this repo](https://github.com/gayanukabulegoda/BabylonJS-PoC.git) • [🐛 Report Bug](https://github.com/gayanukabulegoda/BabylonJS-PoC/issues) • [💡 Request Feature](https://github.com/gayanukabulegoda/BabylonJS-PoC/issues)
+[⭐ Star this repo](https://github.com/gayanukabulegoda/Billboard-Showcase.git) • [🐛 Report Bug](https://github.com/gayanukabulegoda/Billboard-Showcase/issues) • [💡 Request Feature](https://github.com/gayanukabulegoda/Billboard-Showcase/issues)
 
 </div>
